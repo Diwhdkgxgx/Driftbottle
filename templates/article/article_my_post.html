@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}article my post{% endblock %}
+{% block content %}
+
+        <h1>我扔的瓶子</h1>
+
+    {% for article in post_bottle %}
+     <tr>
+        <td><h4>👉  {{ article.article }}</h4></td>
+         <td><h5>内容： {{article.article.body}}</h5></td>
+         <td><h5>状态： {{article.zhuangtai}}</h5></td>
+     <br>
+
+    </tr>
+    {% endfor %}
+        </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}article my commented{% endblock %}
+{% block content %}
+
+        <h1>我回复的瓶子</h1>
+    {% for a in commented_bottle %}
+
+     <tr>
+        <td><h4>👉  {{ a.article }}</h4></td>
+         <td><h5>内容： {{a.article.body}}</h5></td>
+         <td><h5>作者： <a href="{% url 'account:about' a.postuser.id%}" >{{a.article.author.username}}</a></h5></td>
+         <td><h5>状态： {{a.zhuangtai}}</h5></td>
+         <td><h5>评论内容： {{ a.com.body }}</h5></td>
+     </tr>
+
+
+
+     <br>
+{% endfor %}
+
+
+
+        </div>
+        </div>
+    </div>
+{% endblock %}

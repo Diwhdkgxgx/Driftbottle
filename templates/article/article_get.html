@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}article post{% endblock %}
+{% block content %}
+    <div class="row text-center vertical-middle-sm" xmlns="http://www.w3.org/1999/html">
+    {% if error %}
+        <h1>{{ error }}</h1>
+    {% else %}
+        <h1>这是你捞到的瓶子</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-horizontal" action="." method="post">{% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 text-right"><span>扔瓶子的人</span></div>
+                <div class="col-md-8 text-left"><a href="{% url 'account:about' article_info.author.id%}" >{{ article_info.author }}</a></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>标题</span></div>
+                <div class="col-md-8 text-left">{{ article_info.title }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>内容</span></div>
+                <div class="col-md-8 text-left">{{ article_info.body }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>投放时间</span></div>
+                <div class="col-md-8 text-left">{{ article_info.created }}</div>
+            </div>
+
+                <div class="row">
+                <div class="col-md-4 text-right"><span>说点什么吧</span></div>
+                    <div class="col-md-8 text-left">{{ comment_form.body }}</div>
+            </div>
+
+                <div class="row">
+            <input type="submit" class="btn btn-lg btn-primary" value="投送" />
+            {% if success %}
+              {{ success }}
+                {% endif %}
+        </div>
+        </form>
+        </div>
+
+    </div>
+    </div>
+    </div>
+    {% endif %}
+
+
+{% endblock %}

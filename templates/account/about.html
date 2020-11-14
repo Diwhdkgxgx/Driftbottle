@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}about me{% endblock %}
+{% block content %}
+    <div class="row text-center vertical-middle-sm">
+        <h1>个人简介</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4 text-right"><span>用户名：</span></div>
+                <div class="col-md-8 text-left">{{ usern.username }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>邮箱：</span></div>
+                <div class="col-md-8 text-left">{{ usern.email }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>电话：</span></div>
+                <div class="col-md-8 text-left">{{ userprofile.phone }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>生日：</span></div>
+                <div class="col-md-8 text-left">{{ userprofile.birth}}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>性别：</span></div>
+                <div class="col-md-8 text-left">{{ userprofile.get_sex_display }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 text-right"><span>简介：</span></div>
+                <div class="col-md-8 text-left">{{ userprofile.description }}</div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+{% endblock %}
