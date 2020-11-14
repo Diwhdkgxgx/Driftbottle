@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}article putback done{% endblock %}
+{% block content %}
+     <div class="text-center">
+    <h3>你已经把瓶子放回海里面了</h3>
+         <br>
+    <h4>你可以继续<strong><a href="{% url 'article:article_post'  %}"> 扔瓶子</a> </strong>或者<strong><a href="{% url 'article:article_get' user.id %}">捡瓶子</a> </strong>。</h4>
+     </div>
+{% endblock %}

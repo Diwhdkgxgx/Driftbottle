@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import ArticleInfo, ArticleTag, Comment, Bottle
-from .forms import ArticleInfoForm, CommentForm, BottleForm
+from .forms import ArticleInfoForm, BottleForm
 from account.models import User
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -44,39 +44,46 @@ from django.db.models import Q
 @login_required()
 @csrf_exempt
 def article_get(request, id):
-    global nb, article_info
+    global nb, article_info, new_comment
     new_bottle = Bottle.objects.filter(~Q(postuser_id=id), zhuangtai=0)
     count = Bottle.objects.filter(~Q(postuser_id=id), zhuangtai=0).count()
     newuser = User.objects.get(id=id)
 
     if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.article = article_info
-            new_comment.commentator = newuser
+
+        new_comment.article = ArticleInfo.objects.get(id=nb.article_id)
+        new_comment.commentator = newuser
+        new_comment.body = request.POST.get("body")
+
+
+        if len(new_comment.body) != 0:
             new_comment.save()
             nb.com = new_comment
             nb.zhuangtai = 2
             nb.save()
+            return HttpResponseRedirect('/article/article-my-comment')
+            #return render(request, "article/article_get.html", success)
+        else:
+            new_comment.delete()
+            nb.zhuangtai = 0
+            nb.save()
+            new_comment.save()
+            return HttpResponseRedirect('/article/article-putback-done')
 
-        success = {"success": "success"}
-        #return render(request, "article/article_get.html", success)
-        return HttpResponseRedirect('/article/article-my-comment')
 
     else:
+
         if count != 0:
             rand = random.randrange(0, count)
             nb = new_bottle[rand]
             article_info = ArticleInfo.objects.get(id=nb.article_id)
-
+            new_comment = Comment.objects.create(article_id=nb.article_id, commentator_id=request.user.id)
         if count != 0:
-            comment_form = CommentForm()
             nb.zhuangtai = 1
             nb.getuser = request.user.id
             nb.save()
             return render(request, "article/article_get.html",
-                          {'article_info': article_info, "comment_form": comment_form})
+                          {'article_info': article_info, "new_comment": new_comment})
         else:
             error = {'error': '海里面已经没有其他人的瓶子了qwq'}
             return render(request, "article/article_get.html", error)
@@ -91,9 +98,10 @@ def article_my_post(request):
 @login_required()
 def article_my_comment(request):
     if request.method == 'GET':
-        commented_bottle = Bottle.objects.filter(postuser_id=request.user.id, zhuangtai=2)
+        commented_bottle = Bottle.objects.filter(getuser=request.user.id, zhuangtai=2)
         comment = Comment.objects.all()
-        return render(request, "article/article_my_commented.html", {"commented_bottle":commented_bottle, "comment":comment})
+        commented_bottle2 = Bottle.objects.filter(postuser_id=request.user.id, zhuangtai=2)
+        return render(request, "article/article_my_commented.html", {"commented_bottle":commented_bottle, "commented_bottle2":commented_bottle2 })
 
 @login_required()
 def article_my_get(request):
@@ -101,8 +109,10 @@ def article_my_get(request):
         commented_bottle = Bottle.objects.filter(getuser=request.user.id, zhuangtai=1)
         return render(request, "article/article_my_get.html", {"commented_bottle":commented_bottle})
 
-
-
+@login_required()
+def article_putback_done(request):
+    if request.method == 'GET':
+        return render(request, "article/article_putback_done.html")
 
 
 

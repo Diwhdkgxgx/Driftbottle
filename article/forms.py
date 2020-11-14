@@ -8,11 +8,6 @@ class ArticleInfoForm(forms.ModelForm):
         model = ArticleInfo
         fields = ("title", "body")
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ( "body", )
-
 class BottleForm(forms.ModelForm):
     class Meta:
         model = Bottle

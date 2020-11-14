@@ -32,11 +32,12 @@
 
                 <div class="row">
                 <div class="col-md-4 text-right"><span>说点什么吧</span></div>
-                    <div class="col-md-8 text-left">{{ comment_form.body }}</div>
+                    <div class="col-md-8 text-left"><input name="body"></input></div>
             </div>
 
                 <div class="row">
             <input type="submit" class="btn btn-lg btn-primary" value="投送" />
+                <input type="submit" class="btn btn-lg btn-primary" value="仍回海里" />
             {% if success %}
               {{ success }}
                 {% endif %}

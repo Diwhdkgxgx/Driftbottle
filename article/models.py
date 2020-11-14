@@ -54,8 +54,8 @@ class Bottle(models.Model):
     id = models.AutoField(primary_key=True)
     article = models.OneToOneField(ArticleInfo, on_delete=models.CASCADE, verbose_name="所属瓶子文字")
     zhuangtai = models.IntegerField(default=0, verbose_name="瓶子的状态")
-    postuser = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="发布用户")
-    getuser = models.CharField(max_length=100, blank=True, null=True)
+    postuser = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="发布用户",related_name='post_user')
+    getuser = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="获取用户",related_name='get_user',blank=True, null=True)
     com = models.ForeignKey(Comment,on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
